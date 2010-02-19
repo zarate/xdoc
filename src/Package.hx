@@ -5,7 +5,7 @@ class Package
 	
 	public function new()
 	{
-		classes = new Hash<Class>();
+		classes = new Hash<Object>();
 		packages = new Hash<Package>();
 	}
 	
@@ -28,7 +28,7 @@ class Package
 	
 	public var name : String;
 	
-	public var classes : Hash<Class>;
+	public var classes : Hash<Object>;
 	
 	public var packages : Hash<Package>;
 	

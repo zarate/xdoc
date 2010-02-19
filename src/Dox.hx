@@ -8,6 +8,7 @@ TODO
 	-- generate source file?
 	-- output file extensions?
 	-- generate package files?
+	-- carefull with private objects that start wth _
 
 -- print current/total info in one single line!
 -- embed an "index template" when the package is root
@@ -242,7 +243,7 @@ class Dox
 				if(xa.File.hasExtension(itemPath, ['.hx']))
 				{
 					
-					var c = new Class();
+					var c = new Object();
 					c.relativepath = relativepath;
 					c.fullpath = fullpath;
 					c.parent = parent;

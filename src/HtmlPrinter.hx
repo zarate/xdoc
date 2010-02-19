@@ -77,7 +77,7 @@ class HtmlPrinter implements IPrinter
 		
 	}
 	
-	private function printClass(myClass : Class) : Void
+	private function printClass(myClass : Object) : Void
 	{
 		
 		// First the file for the class documentation itself

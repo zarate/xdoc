@@ -1,6 +1,6 @@
 package;
 
-class Class
+class Object
 {
 	
 	public function new()
@@ -9,7 +9,7 @@ class Class
 	
 	public function toString() : String
 	{
-		return 'Class [name=' + name + ', fullpath=' + fullpath + ']';
+		return 'Object [name=' + name + ', fullpath=' + fullpath + ']';
 	}
 	
 	public static function getNameFromPath(path : String) : String
