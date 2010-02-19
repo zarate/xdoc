@@ -33,7 +33,7 @@ class HtmlPrinter implements IPrinter
 		
 		var indexContent = xa.File.read(conf.assetsFolder + "/package.html");
 		var indexTemplate = new haxe.Template(indexContent);
-		var indexOutputContent = indexTemplate.execute({wadus : list});
+		var indexOutputContent = indexTemplate.execute({wadus : list, breadcrumbs: getBreadcrumbs(parent, false)});
 		
 		var filename = (parent == conf.rootPackage)? '/index.html' : parent.name + '.html';
 		
@@ -80,10 +80,11 @@ class HtmlPrinter implements IPrinter
 	private function printClass(myClass : Object) : Void
 	{
 		
-		// First the file for the class documentation itself
+		// First the file for the class documentation itself		
+		
 		var classContent = xa.File.read(conf.assetsFolder + '/class.html');
 		var classTemplate = new haxe.Template(classContent);
-		var classOutput = classTemplate.execute({name : myClass.name, content : "myClass.fast.att"});
+		var classOutput = classTemplate.execute({name : myClass.name, content : "myClass.fast.att", breadcrumbs: getBreadcrumbs(myClass.parent, true)});
 		
 		writeFile(conf.outputFolder + "/" + myClass.docFile, classOutput, myClass.name);
 		
@@ -105,9 +106,45 @@ class HtmlPrinter implements IPrinter
 		
 		var classSourceOutput = classSourceTemplate.execute({name : myClass.name, lines: lines});
 		
+		
 		writeFile(conf.outputFolder + "/" + myClass.docSourceFile, classSourceOutput, myClass.name + ' source');
 		
 		totalWritten++;
+		
+	}
+	
+	private function getBreadcrumbs(p : Package, isClass : Bool) : String
+	{
+		
+		var crumbs = [];
+		
+		while(true)
+		{
+			
+			if(p.parent == null)
+			{
+				break;
+			}
+			else
+			{
+				
+				if(isClass && crumbs.length == 0)
+				{
+					crumbs.push({name : p.name, file: p.name + '.html'});
+				}
+				
+				p = p.parent;
+				
+				crumbs.push({name : p.name, file: p.name + '.html'});
+				
+			}
+			
+		}
+		
+		var breadContent = xa.File.read(conf.assetsFolder + '/breadcrumbs.html');
+		var breadTemplate = new haxe.Template(breadContent);
+		return breadTemplate.execute({crumbs: crumbs});
+
 		
 	}
 	

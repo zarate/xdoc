@@ -32,6 +32,8 @@ class Package
 	
 	public var packages : Hash<Package>;
 	
+	public var parent : Package;
+	
 	public var fullpath : String;
 	
 	public var relativepath(default, setRelativePath) : String; 

@@ -232,6 +232,7 @@ class Dox
 				var p = new Package();
 				p.relativepath = relativepath;
 				p.fullpath = fullpath;
+				p.parent = parent;
 				
 				parent.packages.set(p.name, p);
 				parseClasspath(initialpath, p, ++deep);
