@@ -1,7 +1,6 @@
 /*
 TODO
 
--- specific assets should be optional as well, not only asset folder
 -- more options:
 	-- keep haxedoc.xml
 	-- main title, colours, etc?
@@ -33,6 +32,8 @@ class Dox
 		createHaxedocXml();
 		parseHaxedocXml();
 		print();
+		
+		xa.Application.exit(0);
 		
 	}
 	
@@ -273,10 +274,25 @@ class Dox
 			{
 				
 				case '-assets':
-					config.assetsFolder = args[i+1];
+					
+					config.userAssetsFolder = args[i+1];
+					
+					if(!xa.Folder.isFolder(config.userAssetsFolder))
+					{
+						xa.Application.exitError("Asset folder doesn't look like a valid folder: " + config.userAssetsFolder);
+					}
 				
 				case '-output':
 					config.outputFolder = args[i+1];
+				
+				case '-templates':
+					
+					config.userTemplateFolder = args[i+1];
+				
+					if(!xa.Folder.isFolder(config.userTemplateFolder))
+					{
+						xa.Application.exitError("Templates folder doesn't look like a valid folder: " + config.userTemplateFolder);
+					}
 				
 				case '-cp':
 					userClasspaths.push(neko.FileSystem.fullPath(args[i+1]));
@@ -296,10 +312,9 @@ class Dox
 			xa.Application.exitError("Can't find output folder: " + config.outputFolder);
 		}
 		
-		if(!xa.Folder.isFolder(config.assetsFolder))
-		{
-			config.assetsFolder = neko.FileSystem.fullPath('assets');
-		}
+		// Default assets folder
+		config.assetsFolder = neko.FileSystem.fullPath('assets');
+		config.templatesFolder = neko.FileSystem.fullPath('templates');
 		
 	}
 	
@@ -310,6 +325,7 @@ class Dox
 		xa.Utils.print('-cp : add as many classpaths to your files.');
 		xa.Utils.print('-output : path to the folder where you want the documentation to be exported.');
 		xa.Utils.print('-assets : path to a folder with your own assets. Optional.');
+		xa.Utils.print('-templates : path to a folder with your own templates. Optional.');
 		xa.Utils.print('-lib: if your code uses any library from haxelib you MUST pass it as well to generate the docs. Optional.');
 		xa.Utils.print('-help : show this help.');
 	}

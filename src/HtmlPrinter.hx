@@ -31,8 +31,7 @@ class HtmlPrinter implements IPrinter
 		
 		var list = getIndexList(parent, []);
 		
-		var indexContent = xa.File.read(conf.assetsFolder + "/package.html");
-		var indexTemplate = new haxe.Template(indexContent);
+		var indexTemplate = new haxe.Template(conf.getTemplate(Config.PACKAGE_TPL));
 		var indexOutputContent = indexTemplate.execute({wadus : list, breadcrumbs: getBreadcrumbs(parent, false)});
 		
 		var filename = (parent == conf.rootPackage)? '/index.html' : parent.name + '.html';
@@ -82,16 +81,14 @@ class HtmlPrinter implements IPrinter
 		
 		// First the file for the class documentation itself		
 		
-		var classContent = xa.File.read(conf.assetsFolder + '/class.html');
-		var classTemplate = new haxe.Template(classContent);
+		var classTemplate = new haxe.Template(conf.getTemplate(Config.OBJECT_TPL));
 		var classOutput = classTemplate.execute({name : myClass.name, content : "myClass.fast.att", breadcrumbs: getBreadcrumbs(myClass.parent, true)});
 		
 		writeFile(conf.outputFolder + "/" + myClass.docFile, classOutput, myClass.name);
 		
 		
 		// Then the file for the class source
-		var classSourceContent = xa.File.read(conf.assetsFolder + '/source.html');
-		var classSourceTemplate = new haxe.Template(classSourceContent);
+		var classSourceTemplate = new haxe.Template(conf.getTemplate(Config.OBJECT_SRC_TPL));
 		
 		var classSource = xa.File.read(myClass.fullpath);
 		
@@ -141,8 +138,7 @@ class HtmlPrinter implements IPrinter
 			
 		}
 		
-		var breadContent = xa.File.read(conf.assetsFolder + '/breadcrumbs.html');
-		var breadTemplate = new haxe.Template(breadContent);
+		var breadTemplate = new haxe.Template(conf.getTemplate(Config.CRUMBS_TPL));
 		return breadTemplate.execute({crumbs: crumbs});
 
 		
@@ -151,8 +147,7 @@ class HtmlPrinter implements IPrinter
 	private function writeFile(path : String, content : String, ?title : String = "") : Void
 	{
 		
-		var baseContent = xa.File.read(conf.assetsFolder + "/base.html");
-		var baseTemplate = new haxe.Template(baseContent);
+		var baseTemplate = new haxe.Template(conf.getTemplate(Config.BASE_TPL));
 		var baseOutputContent = baseTemplate.execute({content: content, title: title});
 		
 		xa.File.write(path, baseOutputContent);
