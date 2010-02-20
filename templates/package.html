@@ -1,13 +1,55 @@
 		::breadcrumbs::
 
-		::foreach wadus::
-		
-			<h2><a href="::file::">::name::</a></h2>
+		<h1>::name::</h1>
+
+		<div>
+			
+			<h2>Classes</h2>
+			
+			::if (classes.length > 0)::
 			
 			<ul>
-				::foreach classes::
+			::foreach classes::
 				<li><a href="::file::">::name::</a></li>
-				::end::
+			::end::
 			</ul>
 			
-		::end::
+			::else::
+			
+			<p>No classes.</p>
+			
+			::end::
+			
+		</div>
+
+		
+		<div>
+			
+			<h2>Packages</h2>
+			
+			::if (packages.length > 0)::
+			
+			::foreach packages::
+			
+			<ul>
+				
+				<li><a href="::file::">::name::</a></li>
+				
+				<ul>
+				::foreach classes::
+					<li><a href="::file::">::name::</a></li>
+				::end::
+				</ul>
+				
+			</ul>
+			
+			::end::
+			
+			::else::
+			
+			<p>No packages.</p>
+			
+			::end::
+			
+		</div>
+

@@ -1,0 +1,15 @@
+body
+{
+	font-family:sans-serif;
+	background:#fff;
+}
+
+#breadcrumbs ul
+{
+	padding-left: 0px;
+}
+
+#breadcrumbs li
+{
+	display: inline;
+}

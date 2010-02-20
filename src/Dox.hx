@@ -198,7 +198,7 @@ class Dox
 				p = new Package();
 				p.relativepath = '';
 				p.fullpath = classpath;
-				p.name = 'Root';
+				p.name = 'Index';
 				
 				config.rootPackage = p;
 				

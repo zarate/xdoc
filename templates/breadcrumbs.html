@@ -1,7 +1,9 @@
 <div id="breadcrumbs">
-	<ul>
-		::foreach crumbs::
-		<li><a href="::file::">::name::</a></li>
+	::if (crumbs.length > 0)::
+	<p>Belongs to: 
+		::foreach crumbs:: 
+		<a href="::file::">::name::</a> >
 		::end::
-	</ul>
+		</p>
+	::end::
 </div>

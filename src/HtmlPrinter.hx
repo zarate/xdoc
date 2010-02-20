@@ -17,62 +17,57 @@ class HtmlPrinter implements IPrinter
 		
 		totalWritten = 1;
 		packages(conf.rootPackage);
-		classes(conf.rootPackage);
+		assets();
 		
 	}
 	
-	private function packages(parent : Package) : Void
+	private function packages(myPackage : Package) : Void
 	{
 		
-		for(p in parent.packages.iterator())
+		for(p in myPackage.packages.iterator())
 		{
 			packages(p);
 		}
 		
-		var list = getIndexList(parent, []);
+		var packageList = getChildren(myPackage, []);
 		
-		var indexTemplate = new haxe.Template(conf.getTemplate(Config.PACKAGE_TPL));
-		var indexOutputContent = indexTemplate.execute({wadus : list, breadcrumbs: getBreadcrumbs(parent, false)});
+		var classList = [];
 		
-		var filename = (parent == conf.rootPackage)? '/index.html' : parent.name + '.html';
-		
-		writeFile(conf.outputFolder + "/" + filename, indexOutputContent);
-		
-	}
-	
-	private function getIndexList(parent : Package, list : Array<Dynamic>) : Array<Dynamic>
-	{
-		
-		for(p in parent.packages.iterator())
-		{
-			list.concat(getIndexList(p, list));
-		}
-		
-		var classlist = [];
-		
-		for(c in parent.classes.iterator())
-		{
-			classlist.push({name: c.name, file: c.docFile});
-		}
-		
-		list.push({name: parent.name, file :parent.name + '.html', classes : classlist});
-		
-		return list;
-		
-	}
-	
-	private function classes(parent : Package) : Void
-	{
-		
-		for(p in parent.packages.iterator())
-		{
-			classes(p);
-		}
-		
-		for(c in parent.classes.iterator())
+		for(c in myPackage.classes.iterator())
 		{
 			printClass(c);
+			classList.push({name : c.name, file: c.docFile});
 		}
+		
+		var indexTemplate = new haxe.Template(conf.getTemplate(Config.PACKAGE_TPL));
+		var indexOutputContent = indexTemplate.execute({name : myPackage.name, packages: packageList, classes: classList, breadcrumbs: getBreadcrumbs(myPackage, false)});
+		
+		var filename = (myPackage.parent == null)? '/index.html' : myPackage.name + '.html';
+		
+		writeFile(conf.outputFolder + "/" + filename, indexOutputContent, myPackage.name);
+		
+	}
+	
+	private function getChildren(parent : Package, list : Array<Dynamic>) : Array<Dynamic>
+	{
+		
+		for(p in parent.packages.iterator())
+		{
+
+			var classlist = new Array<Dynamic>();
+
+			for(c in p.classes.iterator())
+			{
+				classlist.push({name: c.name, file: c.docFile});
+			}
+			
+			list.push({name: p.name, file: p.name + '.html', classes : classlist});
+			
+			list.concat(getChildren(p, list));
+			
+		}
+		
+		return list;
 		
 	}
 	
@@ -113,6 +108,7 @@ class HtmlPrinter implements IPrinter
 	private function getBreadcrumbs(p : Package, isClass : Bool) : String
 	{
 		
+		var name = p.name;
 		var crumbs = [];
 		
 		while(true)
@@ -138,9 +134,10 @@ class HtmlPrinter implements IPrinter
 			
 		}
 		
+		crumbs.reverse();
+		
 		var breadTemplate = new haxe.Template(conf.getTemplate(Config.CRUMBS_TPL));
-		return breadTemplate.execute({crumbs: crumbs});
-
+		return breadTemplate.execute({name: name, crumbs: crumbs});
 		
 	}
 	
@@ -151,6 +148,22 @@ class HtmlPrinter implements IPrinter
 		var baseOutputContent = baseTemplate.execute({content: content, title: title});
 		
 		xa.File.write(path, baseOutputContent);
+		
+	}
+	
+	private function assets() : Void
+	{
+		
+		var destinationPath = conf.outputFolder + xa.System.getSeparator() + 'assets';
+		
+		if(xa.Folder.isFolder(destinationPath))
+		{
+			xa.Folder.forceDelete(destinationPath);
+		}
+		
+		xa.Folder.copy(conf.assetsFolder, destinationPath);
+		
+		// TODO: copy user assets
 		
 	}
 	
