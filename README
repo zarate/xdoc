@@ -1,0 +1,13 @@
+xDoc is a documentation tool for haXe code.
+
+Differences with other haXe documentation tools:
+
+- Classpath based: pass your classpath(s) to xDoc and it will output your documentation. haxedoc.xml file is created (almost) automatically.
+- Template based: the output of xDoc should be easily modifiable using haXe templates and custom files (css, js, etc).
+- Output agnostic: currently xDoc outputs html files but it will at least facilitate other outputs such as PDF or CHM.
+
+** IMPORTANT **
+
+xDoc is at the moment no more than a proof of concept. I mean to keep working on it, but I'm not sure it will ever make it to a full release.
+
+You can use other tools such as haxedoc or ChxDoc for the time being, they are very good and much more mature.
