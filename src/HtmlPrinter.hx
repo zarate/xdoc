@@ -77,10 +77,9 @@ class HtmlPrinter implements IPrinter
 		// First the file for the class documentation itself		
 		
 		var classTemplate = new haxe.Template(conf.getTemplate(Config.OBJECT_TPL));
-		var classOutput = classTemplate.execute({name : myClass.name, content : "myClass.fast.att", breadcrumbs: getBreadcrumbs(myClass.parent, true)});
+		var classOutput = classTemplate.execute({myClass : myClass, breadcrumbs: getBreadcrumbs(myClass.parent, true)});
 		
 		writeFile(conf.outputFolder + "/" + myClass.docFile, classOutput, myClass.name);
-		
 		
 		// Then the file for the class source
 		var classSourceTemplate = new haxe.Template(conf.getTemplate(Config.OBJECT_SRC_TPL));

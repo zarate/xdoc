@@ -1,5 +1,7 @@
 package;
 
+import haxe.rtti.CType;
+
 class Object
 {
 	
@@ -39,15 +41,44 @@ class Object
 		return relativepath;
 	}
 	
+	private function setTree(val : Classdef) : Classdef
+	{
+		
+		tree = val;
+		
+		doc = Utils.beautify(tree.doc);
+		platforms = Utils.processList(tree.platforms);
+		
+		isPrivate = tree.isPrivate;
+		isInterface = tree.isInterface;
+		isExtern = tree.isExtern;
+		module = tree.module;
+		
+		return tree;
+		
+	}
+	
+	public var isPrivate : Bool;
+	
+	public var isExtern : Bool;
+	
+	public var isInterface : Bool;
+	
+	public var platforms : String;
+	
+	public var module : String;
+	
+	public var tree(default, setTree) : Classdef;
+	
 	public var fullpath : String;
 	
 	public var docFile : String;
 	
 	public var docSourceFile : String;
 	
-	public var name(default, setName) : String;
+	public var doc : String;
 	
-	public var fast : haxe.xml.Fast;
+	public var name(default, setName) : String;
 	
 	public var parent : Package;
 	

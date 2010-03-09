@@ -4,6 +4,7 @@ class Config
 	public function new()
 	{
 		totalFiles = 0;
+		outputPrivate = false;
 	}
 	
 	/**
@@ -54,6 +55,8 @@ class Config
 	public var rootPackage : Package;
 	
 	public var docXml : haxe.xml.Fast;
+	
+	public var outputPrivate  : Bool;
 	
 	public static var PACKAGE_TPL : String = 'package.html';
 	

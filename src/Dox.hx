@@ -7,7 +7,7 @@ TODO
 	-- generate source file?
 	-- output file extensions?
 	-- generate package files?
-	-- carefull with private objects that start wth _
+	-- carefull with private objects that start with _
 
 -- print current/total info in one single line!
 -- embed an "index template" when the package is root
@@ -15,6 +15,8 @@ TODO
 */
 
 package;
+
+import haxe.rtti.CType;
 
 class Dox
 {
@@ -57,32 +59,96 @@ class Dox
 	
 	private function parseHaxedocXml() : Void
 	{
-		processPackageXml(config.rootPackage);
+		
+		var haxedocFile = config.outputFolder + xa.System.getSeparator() + 'haxedoc.xml';
+		
+		var haxeDocContent = xa.File.read(haxedocFile);
+		
+		var parser = new haxe.rtti.XmlParser();
+		
+		var x = Xml.parse(haxeDocContent).firstElement();
+		
+		parser.process(x, '');
+		
+		for(tree in parser.root)
+		{
+			parseTree(tree);
+		}
+		
 	}
 	
-	private function processPackageXml(parent : Package) : Void
+	private function parseTree(tree : TypeTree) : Void
 	{
-		
-		for(p in parent.packages.iterator())
-		{
-			processPackageXml(p);
-		}
-		
-		for(c in parent.classes.iterator())
+
+		switch(tree)
 		{
 			
-			for(node in config.docXml.elements)
-			{
+			case TPackage(name, full, trees):
 				
-				if(node.att.path == c.name)
+				var p = getPackage(full);
+				
+				if(p == null)
 				{
-					c.fast = node;
-					break;
+					return;
 				}
 				
+				for(tree in trees)
+				{
+					parseTree(tree);
+				}
+			
+			case TClassdecl(decl):
+			
+				var inf = TypeApi.typeInfos(tree);
+				
+				var dotPos = inf.path.lastIndexOf('.');
+				var packagePath = (dotPos != -1 )? inf.path.substr(0, dotPos) : inf.path;
+				
+				var p = getPackage(packagePath);
+				
+				if(p == null)
+				{
+					return;
+				}
+				
+				var c = p.classes.get(inf.path);
+				
+				if(c == null)
+				{
+				}
+				else
+				{
+					c.tree = decl;
+				}
+				
+			// TODO: need to parse TEnumdecl and TTypedecl
+			default:
+				
+		}
+			
+	}
+	
+	private function getPackage(path : String, ?wa : Package) : Package
+	{
+		
+		if(wa == null)
+		{
+			wa = config.rootPackage;
+		}
+		
+		for(p in wa.packages)
+		{
+			
+			if(p.name == path)
+			{
+				return p;
 			}
 			
+			return getPackage(path, p);
+			
 		}
+		
+		return null;
 		
 	}
 	
@@ -300,6 +366,9 @@ class Dox
 				case '-lib':
 					userLibs.push(args[i+1]);
 				
+				case '-private':
+					config.outputPrivate = (args[i+1] == 'true');
+				
 				case '-help':
 					printHelp();
 				
@@ -327,6 +396,7 @@ class Dox
 		xa.Utils.print('-assets : path to a folder with your own assets. Optional.');
 		xa.Utils.print('-templates : path to a folder with your own templates. Optional.');
 		xa.Utils.print('-lib: if your code uses any library from haxelib you MUST pass it as well to generate the docs. Optional.');
+		xa.Utils.print('-private [true|false]: whether you want to output private classes and members. Optional, defaults to false.');
 		xa.Utils.print('-help : show this help.');
 	}
 	

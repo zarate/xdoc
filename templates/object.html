@@ -1,5 +1,45 @@
 ::breadcrumbs::
 
-<h1>::name::</h1>
+<h1>::myClass.name::</h1>
 
-<div id="classContent">::content::</div>
+<div>::myClass.doc::</div>
+
+<div>
+	<p>Is private: ::myClass.isPrivate::</p>
+	<p>Is interface: ::myClass.isInterface::</p>
+	<p>Is extern: ::myClass.isExtern::</p>
+	<p>Available: ::myClass.platforms::</p>
+	<p>Module: ::myClass.module::</p>
+</div>
+
+<!--
+<div id="classContent">
+	
+	
+	::if (myClass.tree.statics.length > 0)::
+	
+	<div>
+		
+		::foreach myClass.tree.statics::
+			
+			<div>
+			<div>public static var ::name:: ()</div>
+			<div>::doc::</div>
+			</div>
+		::end::
+		
+	</div>
+	
+	::end::
+	
+	::if (myClass.tree.fields.length > 0)::
+	
+	<div>Got fields</div>
+	
+	::end::
+	
+	<div>tdynamic, superClass, statics, platforms, path, params, module, isPrivate, isInterface, isExtern, interfaces, fields, doc</div>
+	
+</div>
+
+-->
