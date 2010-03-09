@@ -18,7 +18,7 @@ package;
 
 import haxe.rtti.CType;
 
-class Dox
+class Main
 {
 	
 	public function new()
@@ -389,8 +389,8 @@ class Dox
 	
 	private function printHelp() : Void
 	{
-		xa.Utils.print('Welcome to Dox!');
-		xa.Utils.print('Usage: dox -cp path/to/your/code -output path/to/output/folder [-assets /path/to/your/assets] [-lib libname]');
+		xa.Utils.print('Welcome to xDoc!');
+		xa.Utils.print('Usage: xdoc -cp path/to/your/code -output path/to/output/folder [-assets /path/to/your/assets] [-lib libname] [-private true|false]');
 		xa.Utils.print('-cp : add as many classpaths to your files.');
 		xa.Utils.print('-output : path to the folder where you want the documentation to be exported.');
 		xa.Utils.print('-assets : path to a folder with your own assets. Optional.');
@@ -402,7 +402,7 @@ class Dox
 	
 	public static function main() : Void
 	{
-		var d = new Dox();
+		var d = new Main();
 	}
 	
 	private var userClasspaths : Array<String>;

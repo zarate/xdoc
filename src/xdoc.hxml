@@ -1,0 +1,4 @@
+-cp src/
+-neko xdoc.n
+-lib xapi
+-main Main

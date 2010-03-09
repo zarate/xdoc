@@ -1,5 +1,0 @@
--cp /Users/juan/projects/xapi/repo/src
--cp src/
--neko dox.n
-#-lib xapi
--main Dox
