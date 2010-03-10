@@ -361,6 +361,12 @@ class Main
 					}
 				
 				case '-cp':
+					
+					if(!xa.Folder.isFolder(args[i+1]))
+					{
+						xa.Application.exitError("Classpath doesn't look like a valid folder: " + args[i+1]);
+					}
+					
 					userClasspaths.push(neko.FileSystem.fullPath(args[i+1]));
 				
 				case '-lib':
@@ -374,6 +380,11 @@ class Main
 				
 			}
 			
+		}
+		
+		if(userClasspaths.length <= 0)
+		{
+			xa.Application.exitError("No classpath(s) defined, nothing to do here.");
 		}
 		
 		if(!xa.Folder.isFolder(config.outputFolder))
