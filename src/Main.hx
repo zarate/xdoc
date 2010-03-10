@@ -401,7 +401,7 @@ class Main
 	private function printHelp() : Void
 	{
 		xa.Utils.print('Welcome to xDoc!');
-		xa.Utils.print('Usage: xdoc -cp path/to/your/code -output path/to/output/folder [-assets /path/to/your/assets] [-lib libname] [-private true|false]');
+		xa.Utils.print('Usage: xdoc -cp path/to/your/code -output path/to/output/folder [-assets /path/to/your/assets] [-templates /path/to/your/templates] [-lib libname] [-private true|false]');
 		xa.Utils.print('-cp : add as many classpaths to your files.');
 		xa.Utils.print('-output : path to the folder where you want the documentation to be exported.');
 		xa.Utils.print('-assets : path to a folder with your own assets. Optional.');
