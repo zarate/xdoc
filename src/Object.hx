@@ -6,7 +6,10 @@ class Object
 {
 	
 	public function new()
-	{	
+	{
+		staticFuntions = new List<Function>();
+		fields = new List<Field>();
+		statics = new List<Field>();
 	}
 	
 	public function toString() : String
@@ -54,7 +57,36 @@ class Object
 		isExtern = tree.isExtern;
 		module = tree.module;
 		
+		createFields(tree.statics, statics);
+		createFields(tree.fields, fields);
+		
 		return tree;
+		
+	}
+	
+	private function createFields(fields : List<ClassField>, list : List<Field>) : Void
+	{
+		
+		for(field in fields)
+		{
+			
+			var f : Field;
+			
+			switch(field.type)
+			{
+				
+				case CFunction(args, ret):
+					//xa.Utils.print('GOTCHA: ' + field.name);
+					f = new Function(args, ret);
+				default:
+					f = new Field();
+				
+			}
+			
+			f.rtti = field;
+			list.add(f);
+			
+		}
 		
 	}
 	
@@ -67,6 +99,12 @@ class Object
 	public var platforms : String;
 	
 	public var module : String;
+	
+	public var staticFuntions : List<Function>;
+	
+	public var fields : List<Field>;
+	
+	public var statics : List<Field>;
 	
 	public var tree(default, setTree) : Classdef;
 	

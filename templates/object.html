@@ -12,18 +12,17 @@
 	<p>Module: ::myClass.module::</p>
 </div>
 
-<!--
 <div id="classContent">
 	
+	::if (myClass.statics.length > 0)::
 	
-	::if (myClass.tree.statics.length > 0)::
+	<h2>Static fields</h2>
 	
 	<div>
 		
-		::foreach myClass.tree.statics::
-			
+		::foreach myClass.statics::	
 			<div>
-			<div>public static var ::name:: ()</div>
+			<div><strong>::name::</strong>( ::if (args):: ::foreach args:: ::if (optional):: ? ::end:: ::name:: : ::type::,  ::end:: ::end:: ) : ::ret::</div>
 			<div>::doc::</div>
 			</div>
 		::end::
@@ -32,14 +31,4 @@
 	
 	::end::
 	
-	::if (myClass.tree.fields.length > 0)::
-	
-	<div>Got fields</div>
-	
-	::end::
-	
-	<div>tdynamic, superClass, statics, platforms, path, params, module, isPrivate, isInterface, isExtern, interfaces, fields, doc</div>
-	
 </div>
-
--->
