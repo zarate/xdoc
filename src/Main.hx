@@ -331,6 +331,12 @@ class Main
 		
 		var args = xa.Application.getArguments();
 		
+		if(args.length == 0)
+		{
+			printHelp();
+			xa.Application.exit(0);
+		}
+		
 		for(i in 0...args.length)
 		{
 			
@@ -362,12 +368,14 @@ class Main
 				
 				case '-cp':
 					
-					if(!xa.Folder.isFolder(args[i+1]))
+					var cp = args[i+1];
+					
+					if(!xa.Folder.isFolder(cp))
 					{
-						xa.Application.exitError("Classpath doesn't look like a valid folder: " + args[i+1]);
+						xa.Application.exitError("Classpath doesn't look like a valid folder: " + cp);
 					}
 					
-					userClasspaths.push(neko.FileSystem.fullPath(args[i+1]));
+					userClasspaths.push(neko.FileSystem.fullPath(cp));
 				
 				case '-lib':
 					userLibs.push(args[i+1]);
@@ -403,10 +411,10 @@ class Main
 		xa.Utils.print('Welcome to xDoc!');
 		xa.Utils.print('Usage: xdoc -cp path/to/your/code -output path/to/output/folder [-assets /path/to/your/assets] [-templates /path/to/your/templates] [-lib libname] [-private true|false]');
 		xa.Utils.print('-cp : add as many classpaths to your files.');
-		xa.Utils.print('-output : path to the folder where you want the documentation to be exported.');
+		xa.Utils.print('-output : path to the folder where you want the documentation to be exported. Must exist.');
 		xa.Utils.print('-assets : path to a folder with your own assets. Optional.');
 		xa.Utils.print('-templates : path to a folder with your own templates. Optional.');
-		xa.Utils.print('-lib: if your code uses any library from haxelib you MUST pass it as well to generate the docs. Optional.');
+		xa.Utils.print('-lib: if your code uses any library from haxelib you MUST pass it as well to generate the docs. Optional, depends of your code.');
 		xa.Utils.print('-private [true|false]: whether you want to output private classes and members. Optional, defaults to false.');
 		xa.Utils.print('-help : show this help.');
 	}
