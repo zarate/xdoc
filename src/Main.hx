@@ -331,11 +331,39 @@ class Main
 		
 		var args = xa.Application.getArguments();
 		
+		// No arguments, print help and exit
+		
 		if(args.length == 0)
 		{
 			printHelp();
 			xa.Application.exit(0);
 		}
+		
+		// Only one argument that is the path to a file,
+		// let's read it and parse it, haXe compiler style
+		
+		if(args.length == 1 && xa.File.isFile(args[0]))
+		{
+			
+			args = new Array<String>();
+			
+			var content = xa.File.read(args[0]);
+			
+			var lines = content.split('\n');
+			
+			for(line in lines)
+			{
+				
+				var parts = line.split(' ');
+				
+				args.push(parts[0]);
+				args.push(parts[1]);
+				
+			}
+			
+		}
+		
+		// Bunch of arguments, let's go for it
 		
 		for(i in 0...args.length)
 		{
