@@ -345,9 +345,9 @@ class Main
 		if(args.length == 1 && xa.File.isFile(args[0]))
 		{
 			
-			args = new Array<String>();
-			
 			var content = xa.File.read(args[0]);
+			
+			args = new Array<String>();
 			
 			var lines = content.split('\n');
 			
