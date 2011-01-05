@@ -3,8 +3,6 @@
 haxe src/xdoc.hxml
 haxelib run xcross xdoc.n
 
-mv xdoc-linux bin/
-mv xdoc-osx bin/
-mv xdoc-win.exe bin/
+mv xdoc-* bin/
 
 rm xdoc.n
